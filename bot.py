@@ -5,7 +5,7 @@ from Cogs.Main import Main
 from Cogs.meme import Main_second
 from Cogs.playmusic import Main_third
 from Cogs.slash import slash
-from discord import app_commands
+
 
 bot=commands.Bot(command_prefix='>',intents=discord.Intents.all(),help_command=None)
 @bot.command(name='help')
@@ -79,7 +79,7 @@ async def on_ready():
 
     
     
-bot.run('MTA4NjYzNDQ0ODA5MjY2Mzg5OA.G-4keP.uWjn7WhllXBlxBR0H0yhXgePmN8NR36WxbqLts')
+bot.run('MTA4NjYzNDQ0ODA5MjY2Mzg5OA.GfTddu._bNxlTVK6aB08sN5qUhTiQbXG0DfrqHeLCc94g')
 
 
 
