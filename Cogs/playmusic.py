@@ -3,8 +3,7 @@ from discord.ext import commands
 import yt_dlp
 import Cogs.music
 import Cogs.lib
-import time
-import asyncio
+
 
 class Main_third(commands.Cog):
     def __init__(self, bot):
