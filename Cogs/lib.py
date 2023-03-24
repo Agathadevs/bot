@@ -3,8 +3,7 @@ import datetime
 
 def music_info(youtube_url):
     with  yt_dlp.YoutubeDL() as ydl:
-        data={}
-        
+        data={}       
         original_data = ydl.extract_info(str(youtube_url), download=False)     
         data["id"] = original_data.get("id")
         data["title"] = original_data.get("title")
@@ -15,6 +14,7 @@ def music_info(youtube_url):
         minutes,second=divmod(Time_date,60)
         hour,minutes=divmod(minutes,60)
         time=datetime.time(hour,minutes,second)
+        
         if hour==0:
             data['Time']=time.strftime("%M:%S")
         else:
