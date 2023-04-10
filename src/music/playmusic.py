@@ -27,22 +27,8 @@ class Main_third(commands.Cog):
                     "youtube_url":info['webpage_url'],
                     "duration":info["duration"]
                    }
-    def play_next(self):
-        if len(self.music_queue) > 0:
-            self.is_playing = True
-
-            #get the first url
-            m_url = self.music_queue[0][0]['source']
-
-            #remove the first element as you are currently playing it
-            self.music_queue.pop(0)
-
-            self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next())
-        else:
-            self.is_playing = False
-
-    # infinite loop checking 
-    async def play_music(self,ctx,song_len,song_source):
+    
+    async def play_music(self,ctx):
         if len(self.music_queue) > 0:
             self.is_playing=True
             m_url = self.music_queue[0][0]['source']
@@ -59,13 +45,10 @@ class Main_third(commands.Cog):
                 await self.vc.move_to(self.music_queue[0][1])
             
             #remove the first element as you are currently playing it
-            msg=embed.music_embed(ctx,self.music_queue[0][0]['youtube_url'],song_len)
-            embed=msg['Emb']
-                
-            await ctx.send(embed=embed)
-            m_url=song_source
+            
+            
             self.music_queue.pop(0)    
-            self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next(ctx,song_len,song_source))
+            self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_music())
             self.is_playing==True
         else:
             self.is_playing = False
@@ -89,7 +72,7 @@ class Main_third(commands.Cog):
                 self.music_queue.append([song, voice_channel])
                 songlen=len(self.music_queue)
                 if self.is_playing == False:
-                    await self.play_music(ctx,songlen,song["source"])
+                    await self.play_music(ctx)
                     msg=embed.music_embed(ctx,self.music_queue[0][0]['youtube_url'],songlen)
                     embed=msg['Emb']
                     await ctx.send(embed=embed)
