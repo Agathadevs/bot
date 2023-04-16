@@ -29,22 +29,24 @@ class Main_third(commands.Cog):
                     "duration":info["duration"]
                    }
     
-    def play_next(self):
+    async def play_next(self,ctx,url,song_len):
             if len(self.music_queue) > 0:
                 self.is_playing = True
 
                 #get the first url
                 m_url = self.music_queue[0][0]['source']
 
-                #remove the first element as you are currently playing it
+                
                 self.music_queue.pop(0)
-
+                msg=embed.music_embed(ctx,url,song_len)
+                emb=msg['Emb']
+                await ctx.send(embed=emb)
                 self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next())
             else:
                 self.is_playing = False
 
     # infinite loop checking 
-    async def play_music(self,ctx):
+    async def play_music(self,ctx,url,song_len):
         if len(self.music_queue) > 0:
             self.is_playing = True
 
@@ -64,10 +66,10 @@ class Main_third(commands.Cog):
             #remove the first element as you are currently playing it
             self.music_queue.pop(0)
 
-            self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next())
+            self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next(ctx,url,song_len))
         else:
             self.is_playing = False
-
+    
     @commands.command(name="play", help="Plays a selected song from youtube")
     async def p(self, ctx, *args):
         query = " ".join(args)
@@ -83,11 +85,10 @@ class Main_third(commands.Cog):
             else:
                 await ctx.send("歌曲已加入撥放清單")
                 self.music_queue.append([song, voice_channel])
-                if len(self.music_queue)>1:
-                    time.sleep(song["duration"])
+                song_len=len(self.music_queue)
                 if self.is_playing == False:
-                    await self.play_music(ctx)
-                    song_len=len(self.music_queue)
+                    await self.play_music(ctx,song['youtube_url'],song_len)
+                    
                     msg=embed.music_embed(ctx,song['youtube_url'],song_len)
                     emb=msg['Emb']
                     await ctx.send(embed=emb)
@@ -114,6 +115,7 @@ class Main_third(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(Main_third(bot))
+   
    
    
    
