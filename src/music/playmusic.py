@@ -41,7 +41,10 @@ class Main_third(commands.Cog):
                 msg=embed.music_embed(ctx,url,song_len)
                 emb=msg['Emb']
                 await ctx.send(embed=emb)
-                self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next())
+                try:
+                    await self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e:  self.play_next(ctx,url,song_len))
+                except Exception as error:
+                    print(f"發生錯誤  {error}")
             else:
                 self.is_playing = False
 
@@ -65,8 +68,10 @@ class Main_third(commands.Cog):
             print(self.music_queue)
             #remove the first element as you are currently playing it
             self.music_queue.pop(0)
-
-            self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next(ctx,url,song_len))
+            try:
+                self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next(ctx,url,song_len))
+            except Exception as error:
+                print(f" 發生錯誤  {error}")
         else:
             self.is_playing = False
     
