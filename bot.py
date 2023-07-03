@@ -50,16 +50,16 @@ async def load_extensions():
         if filename.endswith(".py"):
             try:
                 await bot.load_extension(f"src.{filename[:-3]}")
-                print(f"✅   已加載 {filename}")
+                print(f"已加載插件 {filename}")
             except Exception as error:
-                print(f"❎   {filename} 發生錯誤  {error}")
+                print(f"   {filename} 發生錯誤  {error}")
     for filename in os.listdir("./Discord.py-Bot/src/music"):
         if filename.endswith(".py"):
             try:
                 await bot.load_extension(f"src.music.{filename[:-3]}")
-                print(f"✅   已加載 {filename}")
+                print(f"已加載插件 {filename}")
             except Exception as error:
-                print(f"❎   {filename} 發生錯誤  {error}")
+                print(f"   {filename} 發生錯誤  {error}")
 
 
 @bot.event
@@ -74,6 +74,7 @@ async def on_ready():
 with open("./Discord.py-Bot/database/token.json","r")  as file:
     data=json.load(file)
 bot.run(data["TOKEN"])
+w
     
 
 
