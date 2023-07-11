@@ -42,7 +42,7 @@ class Main_third(commands.Cog):
             #get the first url
             m_url = self.music_queue[0][0]['source']
 
-            #remove the first element as you are currently playing it
+           
             self.music_queue.pop(0)
              
             self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e:  asyncio.ensure_future(self.play_next(ctx)))
@@ -57,8 +57,7 @@ class Main_third(commands.Cog):
             self.is_playing = True
 
             m_url = self.music_queue[0][0]['source']
-            
-            #try to connect to voice channel if you are not already connected
+         
 
             if self.vc == None or not self.vc.is_connected():
                 self.vc = await self.music_queue[0][1].connect()
@@ -69,7 +68,7 @@ class Main_third(commands.Cog):
                     return
             
             print(self.music_queue)
-            #remove the first element as you are currently playing it
+            
             song_len=len(self.music_queue)
             url=self.music_queue[0][0]["youtube_url"]
             msg=embed.music_embed(ctx,url,song_len)
