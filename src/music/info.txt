@@ -1,2 +1,1 @@
-當使用 >play [歌曲名稱]時
-self.is_playing==False 為一前置設置的
+
