@@ -16,13 +16,13 @@ class Main(commands.Cog):
         await ctx.send(f"{round(self.bot.latency*1000)} (ms)")
     @commands.Cog.listener()
     async def on_message(self,msg):
-        if msg.content=="嗨":
-            await msg.channel.send("嗨OwO")
+        if msg.content=="":
+            await msg.channel.send("")
     
         if msg.content=="?":
-            await msg.channel.send("蝦?")
+            await msg.channel.send("")
     
-        if msg.content=="沒事":
-            await msg.channel.send("好窩owo")
+        if msg.content=="":
+            await msg.channel.send("")
 async def setup(bot):
     await bot.add_cog(Main(bot))
