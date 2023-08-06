@@ -74,12 +74,3 @@ async def on_ready():
 with open("./Discord.py-Bot/database/token.json","r")  as file:
     data=json.load(file)
 bot.run(data["TOKEN"])
-w
-    
-
-
-
-
-
-
-
