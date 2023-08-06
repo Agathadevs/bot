@@ -5,6 +5,9 @@ from ebs import embed
 import yt_dlp
 import asyncio
 class Main_third(commands.Cog):
+    '''
+    init setting
+    '''
     def __init__(self, bot):
         self.bot = bot
         self.is_playing = False
@@ -15,7 +18,7 @@ class Main_third(commands.Cog):
         self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
         self.vc = None
 
-     #searching the item on youtube
+    
     def search_yt(self,item):
         with yt_dlp.YoutubeDL(self.YDL_OPTIONS) as ydl:
             try: 
@@ -38,36 +41,26 @@ class Main_third(commands.Cog):
             msg=embed.music_embed(ctx,url,song_len)
             emb=msg['Emb']
             await ctx.send(embed=emb)
-
-            #get the first url
             m_url = self.music_queue[0][0]['source']
-
-           
             self.music_queue.pop(0)
-             
             self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e:  asyncio.ensure_future(self.play_next(ctx)))
-            
-            
+                
         else:
             self.is_playing = False
         
-    # infinite loop checking 
+   
     async def play_music(self,ctx):
         if len(self.music_queue) > 0:
             self.is_playing = True
 
             m_url = self.music_queue[0][0]['source']
          
-
             if self.vc == None or not self.vc.is_connected():
                 self.vc = await self.music_queue[0][1].connect()
 
-                #in case we fail to connect
                 if self.vc == None:
                     await ctx.send("Could not connect to the voice channel")
                     return
-            
-            print(self.music_queue)
             
             song_len=len(self.music_queue)
             url=self.music_queue[0][0]["youtube_url"]
@@ -85,7 +78,6 @@ class Main_third(commands.Cog):
             self.music_queue.pop(0)
         else:
 
-            
             self.is_playing = False
 
     @commands.command(name="play", help="Plays a selected song from youtube")
@@ -94,7 +86,7 @@ class Main_third(commands.Cog):
         
         voice_channel = ctx.author.voice.channel
         if voice_channel is None:
-            #you need to be connected so that the bot knows where to go
+    
             await ctx.send("Connect to a voice channel!")
         else:
             song = self.search_yt(query)
@@ -112,8 +104,7 @@ class Main_third(commands.Cog):
         retval = ""
         for i in range(0, len(self.music_queue)):
             retval += self.music_queue[i][0]['title'] + "\n"
-
-        print(retval)
+       
         if retval != "":
             await ctx.send(retval)
         else:
@@ -123,7 +114,6 @@ class Main_third(commands.Cog):
     async def skip(self, ctx):
         if self.vc != "" and self.vc:
             self.vc.stop()
-            #try to play next in the queue if it exists
             await self.play_music()
             
     @commands.command(name="disconnect", help="Disconnecting bot from VC")
@@ -131,7 +121,3 @@ class Main_third(commands.Cog):
         await self.vc.disconnect()
 async def setup(bot):
     await bot.add_cog(Main_third(bot))  
-   
-   
-    
-        
